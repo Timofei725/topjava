@@ -33,6 +33,8 @@ public class User extends AbstractNamedEntity {
         setRoles(roles);
     }
 
+
+
     public String getEmail() {
         return email;
     }
@@ -92,4 +94,5 @@ public class User extends AbstractNamedEntity {
                 ", caloriesPerDay=" + caloriesPerDay +
                 '}';
     }
+
 }
