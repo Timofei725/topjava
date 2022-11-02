@@ -17,11 +17,30 @@
     </style>
 </head>
 <body>
+
 <section>
     <h3><a href="index.html">Home</a></h3>
     <hr/>
     <h2>Meals</h2>
     <a href="meals?action=create">Add Meal</a>
+    <br><br>
+    <%-- Моя форма для фильтра по дате--%>
+    <section>
+        <h2>Установить фильтр по дате</h2>
+        <form method="get" action="getByDate">
+            <dl>
+                <dt>Date since:</dt>
+                <dd><input type="Date" name="dateSince" required></dd>
+            </dl>
+            <dl>
+                <dt>Date to:</dt>
+                <dd><input type="Date" name="dateTo" required></dd>
+            </dl>
+            <button type="submit">Do date filter</button>
+        </form>
+        </section>
+    <%-- Моя форма для фильтра по дате--%>
+
     <br><br>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
@@ -34,7 +53,7 @@
         </tr>
         </thead>
         <c:forEach items="${requestScope.meals}" var="meal">
-            <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.MealTo"/>
+            <jsp:useBean id="meal" type="ru.javawebinar.topjava.to.MealTo"/>
             <tr class="${meal.excess ? 'excess' : 'normal'}">
                 <td>
                         <%--${meal.dateTime.toLocalDate()} ${meal.dateTime.toLocalTime()}--%>
