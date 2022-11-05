@@ -68,7 +68,7 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public List<Meal> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
-        return filterByPredicate(userId, meal -> Util.isBetweenHalfOpen(meal.getDateTime(), startDateTime, endDateTime));
+        return filterByPredicate(userId, meal -> Util.isBetweenHalfOpen(meal.getDate_time(), startDateTime, endDateTime));
     }
 
     @Override
@@ -81,7 +81,7 @@ public class InMemoryMealRepository implements MealRepository {
         return meals == null ? Collections.emptyList() :
                 meals.getCollection().stream()
                         .filter(filter)
-                        .sorted(Comparator.comparing(Meal::getDateTime).reversed())
+                        .sorted(Comparator.comparing(Meal::getDate_time).reversed())
                         .collect(Collectors.toList());
     }
 }

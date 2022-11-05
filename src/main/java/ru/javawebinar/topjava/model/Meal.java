@@ -3,27 +3,38 @@ package ru.javawebinar.topjava.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Objects;
 
 public class Meal extends AbstractBaseEntity {
-    private final LocalDateTime dateTime;
+    private  LocalDateTime date_time;
 
-    private final String description;
+    private  String description;
 
-    private final int calories;
+    private  int calories;
 
-    public Meal(LocalDateTime dateTime, String description, int calories) {
-        this(null, dateTime, description, calories);
+
+
+    public Meal() {
+
     }
 
-    public Meal(Integer id, LocalDateTime dateTime, String description, int calories) {
+    public Meal(LocalDateTime date_time, String description, int calories) {
+        this(null, date_time, description, calories);
+    }
+
+    public Meal(Integer id, LocalDateTime date_time, String description, int calories) {
         super(id);
-        this.dateTime = dateTime;
+        this.date_time = date_time;
         this.description = description;
         this.calories = calories;
     }
+    public Meal(Meal m) {
+        this(m.id, m.date_time, m.description, m.calories);
+    }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+
+    public LocalDateTime getDate_time() {
+        return date_time;
     }
 
     public String getDescription() {
@@ -35,18 +46,38 @@ public class Meal extends AbstractBaseEntity {
     }
 
     public LocalDate getDate() {
-        return dateTime.toLocalDate();
+        return date_time.toLocalDate();
     }
 
     public LocalTime getTime() {
-        return dateTime.toLocalTime();
+        return date_time.toLocalTime();
     }
+
+    public void setDate_time(LocalDateTime date_time) {
+        this.date_time = date_time;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCalories(int calories) {
+        this.calories = calories;
+    }
+    public Integer getId() {
+        return id;
+    }
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+
 
     @Override
     public String toString() {
         return "Meal{" +
                 "id=" + id +
-                ", dateTime=" + dateTime +
+                ", date_time=" + date_time +
                 ", description='" + description + '\'' +
                 ", calories=" + calories +
                 '}';
