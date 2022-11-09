@@ -11,12 +11,17 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+
+
+
 @NamedQueries({
-        @NamedQuery(name = Meal.UPDATE, query = "UPDATE  Meal m set m.description=:description ,m.calories=:calories,m.dateTime=:date_time" +
+        @NamedQuery(name = Meal.UPDATE, query = "UPDATE FROM Meal m set m.description=:description ,m.calories=:calories,m.dateTime=:date_time" +
                 " WHERE m.id=:id AND m.user.id=:user_id"),
         @NamedQuery(name = Meal.DELETE, query = "DELETE FROM Meal m WHERE m.id=:id AND m.user.id=:user_id"),
         @NamedQuery(name = Meal.FIND, query = "SELECT m FROM Meal m WHERE m.id=:id AND m.user.id=:user_id"),
-        @NamedQuery(name = Meal.FIND_ALL, query = "SELECT m FROM Meal m WHERE m.user.id=:user_id  ORDER BY m.dateTime DESC")
+        @NamedQuery(name = Meal.FIND_ALL, query = "SELECT m FROM Meal m WHERE m.user.id=:user_id  ORDER BY m.dateTime DESC"),
+        @NamedQuery(name = Meal.FIND_ALL_BY_DATE, query =  "SELECT m FROM Meal m WHERE m.user.id=:userId  AND m.dateTime >=:startDateTime " +
+                "AND m.dateTime <:endDateTime ORDER BY m.dateTime DESC")
 
 })
 @Entity
@@ -27,10 +32,11 @@ public class Meal extends AbstractBaseEntity {
     public static final String DELETE = "Meal.delete";
     public static final String FIND = "Meal.find";
     public static final String FIND_ALL = "Meal.find_all";
+  public static final String FIND_ALL_BY_DATE = "Meal.find_all_by_date";
 
 
 
-    @Column(name = "dateTime", nullable = false)
+    @Column(name = "date_time", nullable = false)
     @NotNull
     private LocalDateTime dateTime;
 
