@@ -1,16 +1,46 @@
 package ru.javawebinar.topjava.model;
 
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
+import org.hibernate.validator.constraints.Range;
+
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+@NamedQueries({
+        @NamedQuery(name = Meal.UPDATE, query = "UPDATE  Meal m set m.description=:description ,m.calories=:calories,m.dateTime=:date_time" +
+                " WHERE m.id=:id AND m.user.id=:user_id"),
+        @NamedQuery(name = Meal.DELETE, query = "DELETE FROM Meal m WHERE m.id=:id AND m.user.id=:user_id"),
+        @NamedQuery(name = Meal.FIND, query = "SELECT m FROM Meal m WHERE m.id=:id AND m.user.id=:user_id"),
+        @NamedQuery(name = Meal.FIND_ALL, query = "SELECT m FROM Meal m WHERE m.user.id=:user_id  ORDER BY m.dateTime DESC")
+
+})
+@Entity
+@Table(name = "meals")
 public class Meal extends AbstractBaseEntity {
+
+    public static final String UPDATE = "Meal.update";
+    public static final String DELETE = "Meal.delete";
+    public static final String FIND = "Meal.find";
+    public static final String FIND_ALL = "Meal.find_all";
+
+
+
+    @Column(name = "dateTime", nullable = false)
+    @NotNull
     private LocalDateTime dateTime;
 
+    @Column(name = "description", nullable = false)
+    @NotBlank
+    @Size(max = 150)
     private String description;
 
+    @Column(name = "calories", nullable = false)
+    @Range(min = 10, max = 4000)
     private int calories;
 
     @ManyToOne(fetch = FetchType.LAZY)
