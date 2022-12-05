@@ -53,8 +53,13 @@ public class MatcherFactory {
         }
 
         public ResultMatcher contentJson(Iterable<T> expected) {
-            return result -> assertMatch(JsonUtil.readValues(getContent(result), clazz), expected);
+            String s = ",\"excess\":false";
+            String s1= ",\"excess\":true";
+            return result -> assertMatch(JsonUtil.readValues(getContent(result).replaceAll(s,"")
+                    .replaceAll(s1,"")
+                    , clazz), expected);
         }
+
 
         public T readFromJson(ResultActions action) throws UnsupportedEncodingException {
             return JsonUtil.readValue(getContent(action.andReturn()), clazz);
@@ -64,4 +69,6 @@ public class MatcherFactory {
             return result.getResponse().getContentAsString();
         }
     }
+
+
 }
