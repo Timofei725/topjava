@@ -3,7 +3,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.util.CollectionUtils;
-
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -59,9 +59,8 @@ public class User extends AbstractNamedEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
     @OrderBy("dateTime DESC")
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
-//    @JsonIgnore
+    @JsonManagedReference
     private List<Meal> meals;
-
     public User() {
     }
     public User(User u) {
@@ -118,6 +117,11 @@ public class User extends AbstractNamedEntity {
     public List<Meal> getMeals() {
         return meals;
     }
+
+    public void setMeals(List<Meal> meals) {
+        this.meals = meals;
+    }
+
     @Override
     public String toString() {
         return "User{" +
