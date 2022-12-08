@@ -1,5 +1,4 @@
 package ru.javawebinar.topjava.model;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -43,12 +42,13 @@ public class Meal extends AbstractBaseEntity {
     @JsonBackReference
 //    @NotNull
     private User user;
-
     public Meal() {
     }
+
     public Meal(LocalDateTime dateTime, String description, int calories) {
         this(null, dateTime, description, calories);
     }
+
     public Meal(Integer id, LocalDateTime dateTime, String description, int calories) {
         super(id);
         this.dateTime = dateTime;
