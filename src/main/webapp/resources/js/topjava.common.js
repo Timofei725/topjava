@@ -19,6 +19,16 @@ function add() {
     $("#editRow").modal();
 }
 
+function updateRow(id) {
+    form.find(":input").val("");
+    $.get(ctx.ajaxUrl + id, function (data) {
+        $.each(data, function (key, value) {
+            form.find("input[name='" + key + "']").val(value);
+        });
+        $('#editRow').modal();
+    });
+}
+
 function deleteRow(id) {
     $.ajax({
         url: ctx.ajaxUrl + id,
