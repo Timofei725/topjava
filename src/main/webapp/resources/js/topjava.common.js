@@ -1,28 +1,51 @@
 let form;
-function makeEditable(datatableApi) {
-    ctx.datatableApi = datatableApi;
+
+function makeEditable(datatableOpts) {
+    ctx.datatableApi = $("#datatable").DataTable(
+        // https://api.jquery.com/jquery.extend/#jQuery-extend-deep-target-object1-objectN
+        $.extend(true, datatableOpts,
+            {
+                "ajax": {
+                    "url": ctx.ajaxUrl,
+                    "dataSrc": ""
+                },
+                "paging": false,
+                "info": true
+            }
+        ));
     form = $('#detailsForm');
+
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
         failNoty(jqXHR);
     });
+
     // solve problem with cache in IE: https://stackoverflow.com/a/4303862/548473
     $.ajaxSetup({cache: false});
 }
+
 function add() {
     $("#modalTitle").html(i18n["addTitle"]);
     form.find(":input").val("");
     $("#editRow").modal();
 }
+
 function updateRow(id) {
     form.find(":input").val("");
     $("#modalTitle").html(i18n["editTitle"]);
     $.get(ctx.ajaxUrl + id, function (data) {
         $.each(data, function (key, value) {
-            form.find("input[name='" + key + "']").val(value);
+            form.find("input[name='" + key + "']").val(
+                key === "dateTime" ? formatDate(value) : value
+            );
         });
         $('#editRow').modal();
     });
 }
+
+function formatDate(date) {
+    return date.replace('T', ' ').substr(0, 16);
+}
+
 function deleteRow(id) {
     if (confirm(i18n['common.confirm'])) {
         $.ajax({
@@ -34,9 +57,11 @@ function deleteRow(id) {
         });
     }
 }
+
 function updateTableByData(data) {
     ctx.datatableApi.clear().rows.add(data).draw();
 }
+
 function save() {
     $.ajax({
         type: "POST",
@@ -48,13 +73,16 @@ function save() {
         successNoty("common.saved");
     });
 }
+
 let failedNote;
+
 function closeNoty() {
     if (failedNote) {
         failedNote.close();
         failedNote = undefined;
     }
 }
+
 function successNoty(key) {
     closeNoty();
     new Noty({
