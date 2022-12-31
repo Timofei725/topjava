@@ -103,7 +103,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(admin))
                 .content(jsonWithPassword(newUser, newUser.getPassword())))
-                .andExpect(status().isCreated());
+                .andExpect(status().isOk());
 
         User created = USER_MATCHER.readFromJson(action);
         int newId = created.id();
@@ -111,6 +111,30 @@ class AdminRestControllerTest extends AbstractControllerTest {
         USER_MATCHER.assertMatch(created, newUser);
         USER_MATCHER.assertMatch(userService.get(newId), newUser);
     }
+    @Test
+    void createWithInvalidData() throws Exception {
+        User newUser = getNew();
+        newUser.setEmail("");
+        newUser.setPassword("");
+        perform(MockMvcRequestBuilders.post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(admin))
+                .content(jsonWithPassword(newUser, newUser.getPassword())))
+                .andExpect(status().isUnprocessableEntity());
+    }
+    @Test
+    void updateWithInvalidData() throws Exception {
+        User updated = getUpdated();
+        updated.setEmail("");
+        updated.setPassword("");
+        perform(MockMvcRequestBuilders.put(REST_URL + USER_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(admin))
+                .content(jsonWithPassword(updated, updated.getPassword())))
+                .andExpect(status().isUnprocessableEntity());
+
+    }
+
 
     @Test
     void getAll() throws Exception {
